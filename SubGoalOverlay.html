@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sub Goals Overlay</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      color: rgba(255, 255, 255, 0);
+      background-color: rgba(0, 0, 0, 0); /* Transparent pour OBS */
+      text-align: left;
+      padding: 20px;
+    }
+    .subgoal-list {
+      font-size: 18px;
+      line-height: 1,5;
+    }
+    .subgoal-item {
+      margin: 5px 0;
+    }
+    .reached {
+      color: #ffffff; /* Vert pour les paliers atteints */
+      text-decoration: line-through;
+      text-shadow: -1px -1px 0 #4CAF50, 1px -1px 0 #4CAF50, -1px 1px 0 #4CAF50, 1px 1px 0 #4CAF50;
+      animation: goalReached 1s ease-in-out;
+    }
+    @keyframes goalReached {
+  0% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+    .unreached {
+      color: #ffffff; /* Jaune pour les paliers restants */
+      text-shadow: -1px -1px 0 #8400ff, 1px -1px 0 #8400ff, -1px 1px 0 #8400ff, 1px 1px 0 #8400ff;
+    }
+    .simulate-button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #555;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .simulate-button:hover {
+      background-color: #777;
+    }
+  </style>
+</head>
+<body>
+  <div class="subgoal-list" id="subgoalList">
+    <!-- Les paliers seront ajoutés ici dynamiquement -->
+  </div>
+  <button class="simulate-button" onclick="simulateGoal()">Simuler un sub</button>
+
+  <script>
+    const subGoals = [
+      { goal: 5, text: "Défi physique", reached: false },
+      { goal: 10, text: "Chanson pirate karaoké", reached: false },
+      { goal: 15, text: "Roue défi In-Game", reached: false },
+      { goal: 20, text: "Début cosplay Pirate", reached: false },
+      { goal: 30, text: "Manger une cuillère de piment", reached: false },
+      { goal: 40, text: "Fin du cosplay + Giveaway", reached: false }
+    ];
+
+    let simulatedSubs = 0; // Compteur pour les subs simulés
+
+   /* async function fetchSubCount() {
+      const clientId = "l8rd6zpaqm7vjb4xg7xavs0r01rob4"; // Remplace avec ton Client ID
+      const accessToken = "p5aclrl3mviaunbap20q6xineuyzm5"; // Remplace avec ton token d'accès
+
+      try {
+        const response = await fetch("https://api.twitch.tv/helix/subscriptions", {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${accessToken}`,
+            "Client-ID": clientId
+          }
+        });
+
+        const data = await response.json();
+        const subCount = data.total; // Nombre total de subs
+        updateSubGoals(subCount);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des abonnements :", error);
+      }
+    }
+
+    function updateSubGoals(subCount) {
+      const subgoalList = document.getElementById("subgoalList");
+      subgoalList.innerHTML = ""; // Vide la liste avant de la reconstruire
+
+      subGoals.forEach(goal => {
+        goal.reached = subCount >= goal.goal;
+
+        const item = document.createElement("div");
+        item.className = `subgoal-item ${goal.reached ? "reached" : "unreached"}`;
+        item.textContent = `${goal.goal} subs : ${goal.text}`;
+        subgoalList.appendChild(item);
+      });
+    }
+
+    // Rafraîchit les subgoals toutes les 60 secondes
+    fetchSubCount();
+    setInterval(fetchSubCount, 60000);*/
+
+    function updateSubGoals(subCount) {
+      const subgoalList = document.getElementById("subgoalList");
+      subgoalList.innerHTML = ""; // Vide la liste avant de la reconstruire
+
+      subGoals.forEach(goal => {
+        goal.reached = subCount >= goal.goal;
+
+        const item = document.createElement("div");
+        item.className = `subgoal-item ${goal.reached ? "reached" : "unreached"}`;
+        item.textContent = `${goal.goal} subs : ${goal.text}`;
+        subgoalList.appendChild(item);
+      });
+    }
+
+    function simulateGoal() {
+      simulatedSubs++; // Incrémente les subs simulés
+      updateSubGoals(simulatedSubs); // Mets à jour les objectifs
+    }
+
+    // Initialisation
+    updateSubGoals(simulatedSubs);
+
+  </script>
+</body>
+</html>
